@@ -21,9 +21,9 @@ function useData(csvPath){
 
 const App = () => {
     const [selectedDisease, setSelectedDisease] = useState("stroke");
-    const [firstAttr, setFirstAttr] = useState("stroke");
-    const [secondAttr, setSecondAttr] = useState("null");
-    const [thirdAttr, setThirdAttr] = useState("null");
+    const [firstAttr, setFirstAttr] = useState("gender");
+    const [secondAttr, setSecondAttr] = useState("heart_disease");
+    const [thirdAttr, setThirdAttr] = useState("ever_married");
     const [selectedCell, setSelectedCell] = useState(null);//for highlighting the selected cell in the treemap
     
     const WIDTH = 600;
@@ -43,9 +43,19 @@ const App = () => {
     const onThirdAttrChange = ( attr ) => {
         setThirdAttr(attr);
     }
-    const onDiseaseChange = ( disease ) => {
+    const onDiseaseChange = (disease) => {
         setSelectedDisease(disease);
-    }
+
+        if (disease === "stroke") {
+            setFirstAttr("stroke");
+            setSecondAttr("null");
+            setThirdAttr("null");
+        } else if (disease === "heart_disease") {
+            setFirstAttr("heart_disease");
+            setSecondAttr("null");
+            setThirdAttr("null");
+        }
+    };  
     const data = rawData.filter(d => d[selectedDisease] === "1");
     // console.log("data:", data);
     const tree_ = getTree(data, attributes);
@@ -157,7 +167,7 @@ const App = () => {
             </Col>
             <Col lg={7} >
               <h4>{`Why people get ${selectedDisease}? - A treemap explanation`}</h4>
-               <TreeMap margin={margin} svg_width={WIDTH} svg_height={HEIGHT} tree={tree} selectedCell={selectedCell} setSelectedCell={setSelectedCell}/>
+               <TreeMap margin={margin} svg_width={WIDTH} svg_height={HEIGHT} tree={tree} selectedCell={selectedCell} setSelectedCell={setSelectedCell} attributes={attributes}/>
             </Col>
         </Row>
         <Row className={"justify-content-md-left"}>
